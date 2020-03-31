@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <com.israis007.stepper.ui.Stepper
+        android:id="@+id/stepper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:stepper_sequence="sequential"
+        app:stepper_line_tintMode="solid"
+        app:stepper_line_width="2sp"
+        app:stepper_space_between_steps="40sp"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="description_icon">Icon of step</string>
+    <string name="text_step">Waiting of last step</string>
+
+    <!-- Texts of example -->
+    <string name="step1">Step Completed</string>
+    <string name="step2">Step Error</string>
+    <string name="step3">Step Working</string>
+    <string name="step4">Step for scan document</string>
+    <string name="step5">Step send documents</string>
+</resources>

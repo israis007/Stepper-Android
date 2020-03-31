@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background">#F3F3F3</color>
+    <color name="stepCurrent">#000</color>
+    <color name="stepDone">#21AF00</color>
+    <color name="stepError">#D81111</color>
+    <color name="stepWait">#838383</color>
+    <color name="white">#fff</color>
+    <color name="stepIcons">#0C500E</color>
+    <color name="line_color_done">@color/stepCurrent</color>
+    <color name="line_color_wait">@color/stepWait</color>
+</resources>

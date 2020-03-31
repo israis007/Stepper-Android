@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="Stepper">
+        <attr name="stepper_icon_edit" format="reference" />
+        <attr name="stepper_icon_erase" format="reference" />
+        <attr name="stepper_icon_done" format="reference" />
+        <attr name="stepper_icon_current" format="reference" />
+        <attr name="stepper_icon_error" format="reference" />
+        <attr name="stepper_icon_wait" format="reference" />
+        <attr name="stepper_icon_color_done" format="color" />
+        <attr name="stepper_icon_color_current" format="color" />
+        <attr name="stepper_icon_color_error" format="color" />
+        <attr name="stepper_icon_color_wait" format="color" />
+        <attr name="stepper_icon_color_edit" format="color" />
+        <attr name="stepper_icon_color_erase" format="color" />
+        <attr name="stepper_text_color_done" format="color" />
+        <attr name="stepper_text_color_current" format="color" />
+        <attr name="stepper_text_color_error" format="color" />
+        <attr name="stepper_text_color_wait" format="color" />
+        <attr name="stepper_text_size" format="dimension" />
+        <attr name="stepper_sequence" format="enum">
+            <enum name="sequential" value="0" />
+            <enum name="non_sequential" value="1" />
+        </attr>
+        <attr name="stepper_line_width" format="dimension" />
+        <attr name="stepper_line_color_done" format="color" />
+        <attr name="stepper_line_color_wait" format="color" />
+        <attr name="stepper_line_tintMode" format="enum" >
+            <enum name="none" value="0" />
+<!--            <enum name="degraded" value="1" />-->
+            <enum name="solid" value="2" />
+        </attr>
+        <attr name="stepper_space_between_steps" format="dimension" />
+        <attr name="stepper_icon_edit_will_tint" format="boolean" />
+        <attr name="stepper_icon_erase_will_tint" format="boolean" />
+        <attr name="stepper_icon_will_tint" format="boolean" />
+        <attr name="stepper_icon_side_size" format="dimension" />
+        <attr name="stepper_icon_edit_side_size" format="dimension" />
+        <attr name="stepper_icon_erase_side_size" format="dimension" />
+        <attr name="stepper_background" format="color" />
+    </declare-styleable>
+</resources>

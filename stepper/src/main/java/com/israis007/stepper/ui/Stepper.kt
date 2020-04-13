@@ -48,8 +48,7 @@ class Stepper @JvmOverloads constructor(
             attrsStepper.stepper_icon_edit = getDrawable(R.styleable.Stepper_stepper_icon_edit)
             attrsStepper.stepper_icon_erase = getDrawable(R.styleable.Stepper_stepper_icon_erase)
             attrsStepper.stepper_icon_done = getDrawable(R.styleable.Stepper_stepper_icon_done)
-            attrsStepper.stepper_icon_current =
-                getDrawable(R.styleable.Stepper_stepper_icon_current)
+            attrsStepper.stepper_icon_current = getDrawable(R.styleable.Stepper_stepper_icon_current)
             attrsStepper.stepper_icon_error = getDrawable(R.styleable.Stepper_stepper_icon_error)
             attrsStepper.stepper_icon_wait = getDrawable(R.styleable.Stepper_stepper_icon_wait)
             attrsStepper.stepper_icon_color_done = getColor(
@@ -511,7 +510,7 @@ class Stepper @JvmOverloads constructor(
         btn_newActivity.setOnClickListener {
             val textNew = et_newActivity.text.toString().trim()
             if (textNew.isEmpty())
-                et_newActivity.error = context.getString(R.string.new_note_error)
+                et_newActivity.error = context.getString(R.string.new_activity_error)
             else {
                 //add Activity
                 val stepn = Step(

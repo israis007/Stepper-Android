@@ -22,7 +22,7 @@
             android:textSize="@dimen/detail_textsize"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="@string/add_new_note"/>
+            android:hint="@string/add_new_activity"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -35,7 +35,7 @@
         android:layout_gravity="end"
         android:textAllCaps="false"
         android:textSize="@dimen/detail_textsize"
-        android:text="@string/add_new_button"
+        android:text="@string/add_new_activity_button"
         android:textColor="@color/primary"
         style="@style/Widget.AppCompat.Button.Borderless"/>
 

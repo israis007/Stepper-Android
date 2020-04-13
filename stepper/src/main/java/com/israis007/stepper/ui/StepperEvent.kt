@@ -14,4 +14,6 @@ interface StepperEvent {
 
     fun stepClicked(step: Step)
 
+    fun stepAdded(step: Step)
+
 }

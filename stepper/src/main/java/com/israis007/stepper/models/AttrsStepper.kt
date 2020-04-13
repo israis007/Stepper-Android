@@ -33,6 +33,17 @@ class AttrsStepper {
     var stepper_icon_edit_size: Float = 0f
     var stepper_icon_erase_size: Float = 0f
     var stepper_background: Int = 0
+    var stepper_new_border_enable_color: Int = 0
+    var stepper_new_border_disable_color: Int = 0
+    var stepper_new_text_color: Int = 0
+    var stepper_new_text_size: Float = 0f
+    var stepper_new_button_text_size: Float = 0f
+    var stepper_new_button_allcaps: Boolean = false
+    var stepper_new_margin_start: Float = 0f
+    var stepper_new_margin_top: Float = 0f
+    var stepper_new_margin_end: Float = 0f
+    var stepper_new_margin_bottom: Float = 0f
+
 
     companion object {
         fun getSequence(valor: Int) = if (valor == 0) Sequence.SEQUENTIAL else Sequence.NON_SEQUENTIAL
@@ -54,4 +65,9 @@ enum class TintMode{
     NONE,
     DEGRADED,
     SOLID
+}
+
+enum class Texts{
+    CUSTOM,
+    SAME
 }

@@ -27,4 +27,17 @@
         <item name="stepper_icon_edit_side_size">@dimen/little_icon_side</item>
         <item name="stepper_icon_erase_side_size">@dimen/little_icon_side</item>
     </style>
+
+    <!-- EDIT TEXT OUTLINED -->
+    <style name="OutlineEditText" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:colorPrimary">@color/primary</item>
+        <item name="android:colorPrimaryDark">@color/stepCurrent</item>
+        <item name="android:colorAccent">@color/primary</item>
+        <item name="colorControlNormal">@color/primary</item>
+        <item name="colorControlActivated">@color/textColor</item>
+        <item name="colorControlHighlight">@color/textColor</item>
+        <item name="boxStrokeColor">@color/primary</item>
+        <item name="hintTextColor">@color/primary</item>
+        <item name="android:cursorVisible">true</item>
+    </style>
 </resources>

@@ -9,4 +9,7 @@
     <string name="step3">Step Working</string>
     <string name="step4">Step for scan document</string>
     <string name="step5">Step send documents</string>
+    <string name="add_new_note">Agregar Actividad</string>
+    <string name="add_new_button">Guardar</string>
+    <string name="new_note_error">Campo vacío</string>
 </resources>

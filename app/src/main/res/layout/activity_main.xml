@@ -10,10 +10,13 @@
         android:id="@+id/stepper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginStart="10sp"
+        android:layout_marginEnd="10sp"
         app:stepper_sequence="sequential"
         app:stepper_line_tintMode="solid"
         app:stepper_line_width="2sp"
         app:stepper_space_between_steps="40sp"
+        app:stepper_new_text_color="#000"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

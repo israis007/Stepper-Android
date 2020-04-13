@@ -1,28 +1,35 @@
 package com.israis007.stepper.ui
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.withStyledAttributes
 import com.bumptech.glide.Glide
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.israis007.stepper.R
 import com.israis007.stepper.models.*
 import com.israis007.stepper.tools.NumberHelper
+import com.israis007.stepper.tools.ViewTools
+import kotlin.collections.ArrayList
 import kotlin.math.abs
 
 class Stepper @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
-    private lateinit var atrib: AttrsStepper
+    private lateinit var attrsStepper: AttrsStepper
     private var stepList = ArrayList<Step>()
     private var stepAttrsList = ArrayList<StepAttrs>()
     private val paint = Paint()
@@ -36,131 +43,176 @@ class Stepper @JvmOverloads constructor(
             defStyleAttr,
             R.style.StepperStyle
         ) {
-            atrib = AttrsStepper()
+            attrsStepper = AttrsStepper()
             val reso = context.resources
-            atrib.stepper_icon_edit = getDrawable(R.styleable.Stepper_stepper_icon_edit)
-            atrib.stepper_icon_erase = getDrawable(R.styleable.Stepper_stepper_icon_erase)
-            atrib.stepper_icon_done = getDrawable(R.styleable.Stepper_stepper_icon_done)
-            atrib.stepper_icon_current = getDrawable(R.styleable.Stepper_stepper_icon_current)
-            atrib.stepper_icon_error = getDrawable(R.styleable.Stepper_stepper_icon_error)
-            atrib.stepper_icon_wait = getDrawable(R.styleable.Stepper_stepper_icon_wait)
-            atrib.stepper_icon_color_done = getColor(
+            attrsStepper.stepper_icon_edit = getDrawable(R.styleable.Stepper_stepper_icon_edit)
+            attrsStepper.stepper_icon_erase = getDrawable(R.styleable.Stepper_stepper_icon_erase)
+            attrsStepper.stepper_icon_done = getDrawable(R.styleable.Stepper_stepper_icon_done)
+            attrsStepper.stepper_icon_current =
+                getDrawable(R.styleable.Stepper_stepper_icon_current)
+            attrsStepper.stepper_icon_error = getDrawable(R.styleable.Stepper_stepper_icon_error)
+            attrsStepper.stepper_icon_wait = getDrawable(R.styleable.Stepper_stepper_icon_wait)
+            attrsStepper.stepper_icon_color_done = getColor(
                 R.styleable.Stepper_stepper_icon_color_done,
                 ContextCompat.getColor(context, R.color.stepDone)
             )
-            atrib.stepper_icon_color_current = getColor(
+            attrsStepper.stepper_icon_color_current = getColor(
                 R.styleable.Stepper_stepper_icon_color_done,
                 ContextCompat.getColor(context, R.color.stepCurrent)
             )
-            atrib.stepper_icon_color_error = getColor(
+            attrsStepper.stepper_icon_color_error = getColor(
                 R.styleable.Stepper_stepper_icon_color_done,
                 ContextCompat.getColor(context, R.color.stepError)
             )
-            atrib.stepper_icon_color_wait = getColor(
+            attrsStepper.stepper_icon_color_wait = getColor(
                 R.styleable.Stepper_stepper_icon_color_done,
                 ContextCompat.getColor(context, R.color.stepWait)
             )
-            atrib.stepper_icon_color_edit = getColor(
+            attrsStepper.stepper_icon_color_edit = getColor(
                 R.styleable.Stepper_stepper_icon_color_done,
                 ContextCompat.getColor(context, R.color.stepIcons)
             )
-            atrib.stepper_icon_color_erase = getColor(
+            attrsStepper.stepper_icon_color_erase = getColor(
                 R.styleable.Stepper_stepper_icon_color_done,
                 ContextCompat.getColor(context, R.color.stepIcons)
             )
-            atrib.stepper_text_color_done = getColor(
+            attrsStepper.stepper_text_color_done = getColor(
                 R.styleable.Stepper_stepper_icon_color_done,
                 ContextCompat.getColor(context, R.color.stepDone)
             )
-            atrib.stepper_text_color_current = getColor(
+            attrsStepper.stepper_text_color_current = getColor(
                 R.styleable.Stepper_stepper_icon_color_done,
                 ContextCompat.getColor(context, R.color.stepCurrent)
             )
-            atrib.stepper_text_color_error = getColor(
+            attrsStepper.stepper_text_color_error = getColor(
                 R.styleable.Stepper_stepper_icon_color_done,
                 ContextCompat.getColor(context, R.color.stepError)
             )
-            atrib.stepper_text_color_wait = getColor(
+            attrsStepper.stepper_text_color_wait = getColor(
                 R.styleable.Stepper_stepper_icon_color_done,
                 ContextCompat.getColor(context, R.color.stepWait)
             )
-            atrib.stepper_text_size = getDimension(
+            attrsStepper.stepper_text_size = getDimension(
                 R.styleable.Stepper_stepper_text_size,
                 reso.getDimension(R.dimen.text_size)
             )
-            atrib.stepper_sequence = AttrsStepper.getSequence(
+            attrsStepper.stepper_sequence = AttrsStepper.getSequence(
                 getInt(
                     R.styleable.Stepper_stepper_sequence,
                     reso.getInteger(R.integer.Sequence)
                 )
             )
-            atrib.stepper_line_width = getDimension(
+            attrsStepper.stepper_line_width = getDimension(
                 R.styleable.Stepper_stepper_line_width,
                 reso.getDimension(R.dimen.line_witdh)
             )
-            atrib.stepper_line_color_done = getColor(
+            attrsStepper.stepper_line_color_done = getColor(
                 R.styleable.Stepper_stepper_line_color_done,
                 ContextCompat.getColor(context, R.color.stepDone)
             )
-            atrib.stepper_line_color_wait = getColor(
+            attrsStepper.stepper_line_color_wait = getColor(
                 R.styleable.Stepper_stepper_line_color_wait,
                 ContextCompat.getColor(context, R.color.line_color_wait)
             )
-            atrib.stepper_line_tintMode = AttrsStepper.getTintMode(
+            attrsStepper.stepper_line_tintMode = AttrsStepper.getTintMode(
                 getInt(
                     R.styleable.Stepper_stepper_line_tintMode,
                     reso.getInteger(R.integer.TintMode)
                 )
             )
-            atrib.stepper_space_between_steps = getDimension(
+            attrsStepper.stepper_space_between_steps = getDimension(
                 R.styleable.Stepper_stepper_space_between_steps,
                 reso.getDimension(R.dimen.step_distance)
             )
 
-            atrib.stepper_icon_edit_will_tint =
+            attrsStepper.stepper_icon_edit_will_tint =
                 getBoolean(R.styleable.Stepper_stepper_icon_edit_will_tint, false)
-            atrib.stepper_icon_erase_will_tint =
+            attrsStepper.stepper_icon_erase_will_tint =
                 getBoolean(R.styleable.Stepper_stepper_icon_erase_will_tint, false)
-            atrib.stepper_icon_will_tint =
+            attrsStepper.stepper_icon_will_tint =
                 getBoolean(R.styleable.Stepper_stepper_icon_will_tint, false)
 
-            atrib.stepper_icon_size = getDimension(
+            attrsStepper.stepper_icon_size = getDimension(
                 R.styleable.Stepper_stepper_icon_side_size,
                 reso.getDimension(R.dimen.icon_side)
             )
-            atrib.stepper_icon_edit_size = getDimension(
+            attrsStepper.stepper_icon_edit_size = getDimension(
                 R.styleable.Stepper_stepper_icon_edit_side_size,
                 reso.getDimension(R.dimen.little_icon_side)
             )
-            atrib.stepper_icon_erase_size = getDimension(
+            attrsStepper.stepper_icon_erase_size = getDimension(
                 R.styleable.Stepper_stepper_icon_erase_side_size,
                 reso.getDimension(R.dimen.little_icon_side)
             )
 
-            atrib.stepper_background = getColor(
+            attrsStepper.stepper_background = getColor(
                 R.styleable.Stepper_stepper_background,
                 ContextCompat.getColor(context, R.color.background)
             )
 
+            attrsStepper.stepper_new_border_enable_color = getColor(
+                R.styleable.Stepper_stepper_new_border_enable_color,
+                ContextCompat.getColor(context, R.color.primary)
+            )
+            attrsStepper.stepper_new_border_disable_color = getColor(
+                R.styleable.Stepper_stepper_new_border_disable_color,
+                ContextCompat.getColor(context, R.color.textColor)
+            )
+            attrsStepper.stepper_new_text_color = getColor(
+                R.styleable.Stepper_stepper_new_text_color,
+                ContextCompat.getColor(context, R.color.primary)
+            )
+            attrsStepper.stepper_new_text_size = getDimension(
+                R.styleable.Stepper_stepper_new_text_size,
+                reso.getDimension(R.dimen.detail_textsize)
+            )
+            attrsStepper.stepper_new_button_text_size = getDimension(
+                R.styleable.Stepper_stepper_new_button_text_size,
+                reso.getDimension(R.dimen.detail_textsize)
+            )
+            attrsStepper.stepper_new_button_allcaps =
+                getBoolean(R.styleable.Stepper_stepper_new_button_allcaps, false)
+            attrsStepper.stepper_new_margin_start = getDimension(
+                R.styleable.Stepper_stepper_new_margin_start,
+                reso.getDimension(R.dimen.note_margin_sides)
+            )
+            attrsStepper.stepper_new_margin_top = getDimension(
+                R.styleable.Stepper_stepper_new_margin_top,
+                reso.getDimension(R.dimen.note_margin_top)
+            )
+            attrsStepper.stepper_new_margin_end = getDimension(
+                R.styleable.Stepper_stepper_new_margin_end,
+                reso.getDimension(R.dimen.note_margin_sides)
+            )
+            attrsStepper.stepper_new_margin_bottom = getDimension(
+                R.styleable.Stepper_stepper_new_margin_bottom,
+                reso.getDimension(R.dimen.note_margin_bottom)
+            )
+
             /* Validating nulls */
-            if (atrib.stepper_icon_edit == null)
-                atrib.stepper_icon_edit = ContextCompat.getDrawable(context, R.drawable.ic_edit)
+            if (attrsStepper.stepper_icon_edit == null)
+                attrsStepper.stepper_icon_edit =
+                    ContextCompat.getDrawable(context, R.drawable.ic_edit)
 
-            if (atrib.stepper_icon_erase == null)
-                atrib.stepper_icon_erase = ContextCompat.getDrawable(context, R.drawable.ic_erase)
+            if (attrsStepper.stepper_icon_erase == null)
+                attrsStepper.stepper_icon_erase =
+                    ContextCompat.getDrawable(context, R.drawable.ic_erase)
 
-            if (atrib.stepper_icon_done == null)
-                atrib.stepper_icon_done = ContextCompat.getDrawable(context, R.drawable.ic_done)
+            if (attrsStepper.stepper_icon_done == null)
+                attrsStepper.stepper_icon_done =
+                    ContextCompat.getDrawable(context, R.drawable.ic_done)
 
-            if (atrib.stepper_icon_current == null)
-                atrib.stepper_icon_current =
+            if (attrsStepper.stepper_icon_current == null)
+                attrsStepper.stepper_icon_current =
                     ContextCompat.getDrawable(context, R.drawable.ic_current)
 
-            if (atrib.stepper_icon_error == null)
-                atrib.stepper_icon_error = ContextCompat.getDrawable(context, R.drawable.ic_error)
+            if (attrsStepper.stepper_icon_error == null)
+                attrsStepper.stepper_icon_error =
+                    ContextCompat.getDrawable(context, R.drawable.ic_error)
 
-            if (atrib.stepper_icon_wait == null)
-                atrib.stepper_icon_wait = ContextCompat.getDrawable(context, R.drawable.ic_wait)
+            if (attrsStepper.stepper_icon_wait == null)
+                attrsStepper.stepper_icon_wait =
+                    ContextCompat.getDrawable(context, R.drawable.ic_wait)
 
             /* Creating a example array to draw in preview of editor */
             stepList.add(
@@ -168,9 +220,9 @@ class Stepper @JvmOverloads constructor(
                     context,
                     1,
                     reso.getString(R.string.step1),
-                    atrib.stepper_text_color_current,
+                    attrsStepper.stepper_text_color_current,
                     reso.getString(R.string.step1),
-                    atrib.stepper_text_color_done,
+                    attrsStepper.stepper_text_color_done,
                     Status.DONE
                 )
             )
@@ -179,9 +231,9 @@ class Stepper @JvmOverloads constructor(
                     context,
                     2,
                     reso.getString(R.string.step2),
-                    atrib.stepper_text_color_current,
+                    attrsStepper.stepper_text_color_current,
                     reso.getString(R.string.step2),
-                    atrib.stepper_text_color_done,
+                    attrsStepper.stepper_text_color_done,
                     Status.ERROR
                 )
             )
@@ -190,9 +242,9 @@ class Stepper @JvmOverloads constructor(
                     context,
                     3,
                     reso.getString(R.string.step3),
-                    atrib.stepper_text_color_current,
+                    attrsStepper.stepper_text_color_current,
                     reso.getString(R.string.step3),
-                    atrib.stepper_text_color_done,
+                    attrsStepper.stepper_text_color_done,
                     Status.CURRENT
                 )
             )
@@ -201,9 +253,9 @@ class Stepper @JvmOverloads constructor(
                     context,
                     4,
                     reso.getString(R.string.step4),
-                    atrib.stepper_text_color_current,
+                    attrsStepper.stepper_text_color_current,
                     reso.getString(R.string.step4),
-                    atrib.stepper_text_color_done,
+                    attrsStepper.stepper_text_color_done,
                     Status.WAITING
                 )
             )
@@ -212,16 +264,16 @@ class Stepper @JvmOverloads constructor(
                     context,
                     5,
                     reso.getString(R.string.step5),
-                    atrib.stepper_text_color_current,
+                    attrsStepper.stepper_text_color_current,
                     reso.getString(R.string.step5),
-                    atrib.stepper_text_color_done,
+                    attrsStepper.stepper_text_color_done,
                     Status.WAITING
                 )
             )
 
             orientation = VERTICAL
 
-            setBackgroundColor(atrib.stepper_background)
+            setBackgroundColor(attrsStepper.stepper_background)
 
             paintSteps()
 
@@ -243,7 +295,7 @@ class Stepper @JvmOverloads constructor(
                 LayoutParams.WRAP_CONTENT
             )
             if (i != 0) {
-                lp.setMargins(0, atrib.stepper_space_between_steps.toInt(), 0, 0)
+                lp.setMargins(0, attrsStepper.stepper_space_between_steps.toInt(), 0, 0)
             }
             stepv.layoutParams = lp
 
@@ -263,21 +315,21 @@ class Stepper @JvmOverloads constructor(
 
             if (iconfs == null)
                 iconfs = when (step.status) {
-                    Status.DONE -> atrib.stepper_icon_done
-                    Status.WAITING -> atrib.stepper_icon_wait
-                    Status.CURRENT -> atrib.stepper_icon_current
-                    Status.ERROR -> atrib.stepper_icon_error
+                    Status.DONE -> attrsStepper.stepper_icon_done
+                    Status.WAITING -> attrsStepper.stepper_icon_wait
+                    Status.CURRENT -> attrsStepper.stepper_icon_current
+                    Status.ERROR -> attrsStepper.stepper_icon_error
                 }
 
             var iconErasefs: Drawable? = step.iconErase
 
             if (iconErasefs == null)
-                iconErasefs = atrib.stepper_icon_erase
+                iconErasefs = attrsStepper.stepper_icon_erase
 
             var iconEditfs: Drawable? = step.iconEdit
 
             if (iconEditfs == null)
-                iconEditfs = atrib.stepper_icon_edit
+                iconEditfs = attrsStepper.stepper_icon_edit
 
 
             Glide.with(context).load(iconfs).fitCenter().circleCrop().into(iconView)
@@ -300,30 +352,30 @@ class Stepper @JvmOverloads constructor(
 
             if (iconViewColor == null)
                 iconViewColor = when (step.status) {
-                    Status.DONE -> atrib.stepper_icon_color_done
-                    Status.WAITING -> atrib.stepper_icon_color_wait
-                    Status.CURRENT -> atrib.stepper_icon_color_current
-                    Status.ERROR -> atrib.stepper_icon_color_error
+                    Status.DONE -> attrsStepper.stepper_icon_color_done
+                    Status.WAITING -> attrsStepper.stepper_icon_color_wait
+                    Status.CURRENT -> attrsStepper.stepper_icon_color_current
+                    Status.ERROR -> attrsStepper.stepper_icon_color_error
                 }
 
             var iconEraseColor: Int? = step.iconEraseColorTint
 
             if (iconEraseColor == null)
-                iconEraseColor = atrib.stepper_icon_color_erase
+                iconEraseColor = attrsStepper.stepper_icon_color_erase
 
             var iconEditColor: Int? = step.iconEditColorTint
 
             if (iconEditColor == null)
-                iconEditColor = atrib.stepper_icon_color_erase
+                iconEditColor = attrsStepper.stepper_icon_color_erase
 
-            if (atrib.stepper_icon_will_tint)
-                iconView.setColorFilter(iconViewColor, android.graphics.PorterDuff.Mode.SRC_IN)
+            if (attrsStepper.stepper_icon_will_tint)
+                iconView.setColorFilter(iconViewColor, PorterDuff.Mode.SRC_IN)
 
-            if (atrib.stepper_icon_edit_will_tint)
-                iconEdit.setColorFilter(iconEraseColor, android.graphics.PorterDuff.Mode.SRC_IN)
+            if (attrsStepper.stepper_icon_edit_will_tint)
+                iconEdit.setColorFilter(iconEraseColor, PorterDuff.Mode.SRC_IN)
 
-            if (atrib.stepper_icon_erase_will_tint)
-                iconErase.setColorFilter(iconEditColor, android.graphics.PorterDuff.Mode.SRC_IN)
+            if (attrsStepper.stepper_icon_erase_will_tint)
+                iconErase.setColorFilter(iconEditColor, PorterDuff.Mode.SRC_IN)
 
             var textColor: Int? = when (step.status) {
                 Status.DONE -> step.textDoneColor
@@ -334,23 +386,23 @@ class Stepper @JvmOverloads constructor(
 
             if (textColor == null)
                 textColor = when (step.status) {
-                    Status.DONE -> atrib.stepper_text_color_done
-                    Status.WAITING -> atrib.stepper_text_color_wait
-                    Status.CURRENT -> atrib.stepper_text_color_current
-                    Status.ERROR -> atrib.stepper_text_color_error
+                    Status.DONE -> attrsStepper.stepper_text_color_done
+                    Status.WAITING -> attrsStepper.stepper_text_color_wait
+                    Status.CURRENT -> attrsStepper.stepper_text_color_current
+                    Status.ERROR -> attrsStepper.stepper_text_color_error
                 }
 
             textView.setTextColor(textColor)
-            textView.textSize = atrib.stepper_text_size
+            textView.textSize = attrsStepper.stepper_text_size
             val marg = context.resources.getDimension(R.dimen.icon_margin)
 
-            aux += if (i == 0) marg else marg * 2 + atrib.stepper_icon_size + atrib.stepper_space_between_steps
+            aux += if (i == 0) marg else marg * 2 + attrsStepper.stepper_icon_size + attrsStepper.stepper_space_between_steps
 
             stepAttrsList.add(
                 StepAttrs(
                     marg,
                     aux,
-                    atrib.stepper_icon_size,
+                    attrsStepper.stepper_icon_size,
                     iconViewColor
                 )
             )
@@ -388,6 +440,8 @@ class Stepper @JvmOverloads constructor(
             this.addView(stepv)
         }
 
+        loadLastField()
+
     }
 
     private fun createNewStep(): View =
@@ -397,6 +451,85 @@ class Stepper @JvmOverloads constructor(
         if (view.parent != null)
             (view as ViewGroup).removeView(view)
         return view
+    }
+
+    private fun loadLastField() {
+        val temp = LayoutInflater.from(context).inflate(R.layout.template_layout, null, false)
+        val til_newActivity = temp.findViewById<TextInputLayout>(R.id.tilNewNote)
+        val et_newActivity = temp.findViewById<TextInputEditText>(R.id.etNewNote)
+        val btn_newActivity = temp.findViewById<Button>(R.id.btnNewNote)
+
+        /* Setting properties */
+        til_newActivity.boxStrokeColor = attrsStepper.stepper_new_border_enable_color
+
+        val states = arrayOf(
+            intArrayOf(android.R.attr.state_focused),
+            intArrayOf(-android.R.attr.state_focused),
+            intArrayOf(android.R.attr.state_empty),
+            intArrayOf(android.R.attr.state_enabled),
+            intArrayOf(android.R.attr.state_activated),
+            intArrayOf(-android.R.attr.state_pressed),
+            intArrayOf(-android.R.attr.state_window_focused),
+            intArrayOf(-android.R.attr.state_active)
+        )
+
+        val colors = intArrayOf(
+            attrsStepper.stepper_new_border_enable_color,
+            attrsStepper.stepper_new_border_disable_color,
+            attrsStepper.stepper_new_border_disable_color,
+            attrsStepper.stepper_new_border_disable_color,
+            attrsStepper.stepper_new_border_disable_color,
+            attrsStepper.stepper_new_border_disable_color,
+            attrsStepper.stepper_new_border_disable_color,
+            attrsStepper.stepper_new_border_disable_color
+        )
+
+        til_newActivity.hintTextColor = ColorStateList(states, colors)
+        til_newActivity.defaultHintTextColor = ColorStateList(states, colors)
+        et_newActivity.setTextColor(attrsStepper.stepper_new_text_color)
+        et_newActivity.setTextSize(TypedValue.COMPLEX_UNIT_PX, attrsStepper.stepper_new_text_size)
+        btn_newActivity.setTextSize(
+            TypedValue.COMPLEX_UNIT_PX,
+            attrsStepper.stepper_new_button_text_size
+        )
+        btn_newActivity.setTextColor(attrsStepper.stepper_new_text_color)
+        btn_newActivity.isAllCaps = attrsStepper.stepper_new_button_allcaps
+
+        val lpet = til_newActivity.layoutParams as LayoutParams
+        lpet.setMargins(
+            attrsStepper.stepper_new_margin_start.toInt(),
+            attrsStepper.stepper_new_margin_top.toInt(),
+            attrsStepper.stepper_new_margin_end.toInt(),
+            attrsStepper.stepper_new_margin_bottom.toInt()
+        )
+        til_newActivity.layoutParams = lpet
+
+        /* Adding views */
+        this.addView(ViewTools.getViewWithoutParent(temp))
+
+        /* Adding Events */
+        btn_newActivity.setOnClickListener {
+            val textNew = et_newActivity.text.toString().trim()
+            if (textNew.isEmpty())
+                et_newActivity.error = context.getString(R.string.new_note_error)
+            else {
+                //add Activity
+                val stepn = Step(
+                    context,
+                    stepList.size + 1,
+                    textNew,
+                    0,
+                    context.getString(R.string.step1),
+                    0,
+                    Status.WAITING
+                )
+                this@Stepper.stepList.add(stepn)
+                stepperEvent?.stepAdded(stepn)
+                et_newActivity.text = null
+                paintSteps()
+            }
+        }
+        this@Stepper.addView(ViewTools.getViewWithoutParent(temp))
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -409,16 +542,16 @@ class Stepper @JvmOverloads constructor(
             val nextStep = stepList[i + 1]
             val stepAttr = stepAttrsList[i]
             val nextStepAttr = stepAttrsList[i + 1]
-            var half = NumberHelper.getHalfNumber(atrib.stepper_line_width) * -1
+            var half = NumberHelper.getHalfNumber(attrsStepper.stepper_line_width) * -1
 
-            when (atrib.stepper_line_tintMode) {
+            when (attrsStepper.stepper_line_tintMode) {
                 TintMode.SOLID -> paint.color =
-                    if (nextStep.status != Status.WAITING) atrib.stepper_line_color_done!! else atrib.stepper_line_color_wait!!
+                    if (nextStep.status != Status.WAITING) attrsStepper.stepper_line_color_done!! else attrsStepper.stepper_line_color_wait!!
                 TintMode.DEGRADED -> paint.shader = LinearGradient(
                     0f,
                     0f,
                     0f,
-                    atrib.stepper_space_between_steps * .5f,
+                    attrsStepper.stepper_space_between_steps * .5f,
                     stepAttr.color,
                     nextStepAttr.color,
                     Shader.TileMode.MIRROR
@@ -427,7 +560,7 @@ class Stepper @JvmOverloads constructor(
                 }
             }
 
-            if (atrib.stepper_line_tintMode != TintMode.NONE)
+            if (attrsStepper.stepper_line_tintMode != TintMode.NONE)
                 repeat(abs(half * 2 + 1)) {
                     canvas.drawLine(
                         half + stepAttr.coorX + stepAttr.size / 2,

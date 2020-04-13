@@ -38,5 +38,24 @@
         <attr name="stepper_icon_edit_side_size" format="dimension" />
         <attr name="stepper_icon_erase_side_size" format="dimension" />
         <attr name="stepper_background" format="color" />
+        <attr name="stepper_new_border_enable_color" format="color" />
+        <attr name="stepper_new_border_disable_color" format="color" />
+        <attr name="stepper_new_text_color" format="color" />
+        <attr name="stepper_new_text_size" format="dimension" />
+        <attr name="stepper_new_button_text_size" format="dimension" />
+        <attr name="stepper_new_button_allcaps" format="boolean" />
+        <attr name="stepper_new_margin_start" format="dimension" />
+        <attr name="stepper_new_margin_top" format="dimension" />
+        <attr name="stepper_new_margin_end" format="dimension" />
+        <attr name="stepper_new_margin_bottom" format="dimension" />
+        <attr name="stepper_texts" format="enum">
+            <enum name="custom" value="0" />
+            <enum name="same" value="1" />
+        </attr>
+        <attr name="stepper_text_done" format="string" />
+        <attr name="stepper_text_wait" format="string" />
+        <attr name="stepper_text_error" format="string" />
+        <attr name="stepper_text_current" format="string" />
+
     </declare-styleable>
 </resources>

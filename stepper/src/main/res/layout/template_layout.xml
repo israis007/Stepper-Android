@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
+
+    <!-- Añadir nueva nota -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilNewNote"
+        style="@style/OutlineEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/labels_margin"
+        android:layout_marginStart="@dimen/labels_margin"
+        android:layout_marginEnd="@dimen/labels_margin"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etNewNote"
+            android:textSize="@dimen/detail_textsize"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/add_new_note"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Añadir nuva nota -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnNewNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/labels_margin"
+        android:layout_gravity="end"
+        android:textAllCaps="false"
+        android:textSize="@dimen/detail_textsize"
+        android:text="@string/add_new_button"
+        android:textColor="@color/primary"
+        style="@style/Widget.AppCompat.Button.Borderless"/>
+
+</LinearLayout>

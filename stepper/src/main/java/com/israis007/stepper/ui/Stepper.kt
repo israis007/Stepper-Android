@@ -85,19 +85,19 @@ class Stepper @JvmOverloads constructor(
                 ContextCompat.getColor(context, R.color.stepIcons)
             )
             attrsStepper.stepper_text_color_done = getColor(
-                R.styleable.Stepper_stepper_icon_color_done,
+                R.styleable.Stepper_stepper_text_color_done,
                 ContextCompat.getColor(context, R.color.stepDone)
             )
             attrsStepper.stepper_text_color_current = getColor(
-                R.styleable.Stepper_stepper_icon_color_current,
+                R.styleable.Stepper_stepper_text_color_current,
                 ContextCompat.getColor(context, R.color.stepCurrent)
             )
             attrsStepper.stepper_text_color_error = getColor(
-                R.styleable.Stepper_stepper_icon_color_error,
+                R.styleable.Stepper_stepper_text_color_error,
                 ContextCompat.getColor(context, R.color.stepError)
             )
             attrsStepper.stepper_text_color_wait = getColor(
-                R.styleable.Stepper_stepper_icon_color_wait,
+                R.styleable.Stepper_stepper_text_color_wait,
                 ContextCompat.getColor(context, R.color.stepWait)
             )
             attrsStepper.stepper_text_size = getDimension(

@@ -22,6 +22,8 @@
         app:stepper_icon_done="@drawable/ic_business"
         app:stepper_text="manches escribe la actividad"
         app:stepper_text_color_done="@color/primary"
+        app:stepper_text_color_current="#007151"
+        app:stepper_text_color_wait="@color/colorPrimaryDark"
         app:stepper_icon_color_done="@color/primary"
         app:stepper_icon_will_tint="true"
         app:stepper_texts="same"

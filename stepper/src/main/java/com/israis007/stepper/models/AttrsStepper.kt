@@ -9,16 +9,16 @@ class AttrsStepper {
     var stepper_icon_current: Drawable? = null
     var stepper_icon_error: Drawable? = null
     var stepper_icon_wait: Drawable? = null
-    var stepper_icon_color_done: Int = 0
-    var stepper_icon_color_current: Int = 0
-    var stepper_icon_color_error: Int = 0
-    var stepper_icon_color_wait: Int = 0
-    var stepper_icon_color_edit: Int = 0
-    var stepper_icon_color_erase: Int = 0
-    var stepper_text_color_done: Int = 0
-    var stepper_text_color_current: Int = 0
-    var stepper_text_color_error: Int = 0
-    var stepper_text_color_wait: Int = 0
+    var stepper_icon_color_done: Int? = null
+    var stepper_icon_color_current: Int? = null
+    var stepper_icon_color_error: Int? = null
+    var stepper_icon_color_wait: Int? = null
+    var stepper_icon_color_edit: Int? = null
+    var stepper_icon_color_erase: Int? = null
+    var stepper_text_color_done: Int? = null
+    var stepper_text_color_current: Int? = null
+    var stepper_text_color_error: Int? = null
+    var stepper_text_color_wait: Int? = null
     var stepper_text_size: Float = 0f
     var stepper_sequence: Sequence = Sequence.SEQUENTIAL
     var stepper_line_width: Float = 0f
@@ -43,6 +43,11 @@ class AttrsStepper {
     var stepper_new_margin_top: Float = 0f
     var stepper_new_margin_end: Float = 0f
     var stepper_new_margin_bottom: Float = 0f
+    var stepper_text: String  =""
+    var stepper_text_button: String = ""
+    var stepper_text_type: Texts = Texts.SAME
+    var stepper_text_done: String = ""
+    var stepper_text_error: String = ""
 
 
     companion object {
@@ -52,6 +57,11 @@ class AttrsStepper {
             0 -> TintMode.NONE
             1 -> TintMode.DEGRADED
             else -> TintMode.SOLID
+        }
+
+        fun getTexts(valor: Int) = when(valor) {
+            0 -> Texts.CUSTOM
+            else -> Texts.SAME
         }
     }
 }

@@ -17,6 +17,15 @@
         app:stepper_line_width="2sp"
         app:stepper_space_between_steps="40sp"
         app:stepper_new_text_color="#000"
+        app:stepper_icon_wait="@drawable/ic_audiotrack"
+        app:stepper_icon_done="@drawable/ic_business"
+        app:stepper_text="manches escribe la actividad"
+        app:stepper_text_color_done="@color/primary"
+        app:stepper_icon_color_done="@color/primary"
+        app:stepper_icon_will_tint="true"
+        app:stepper_texts="same"
+        app:stepper_text_done="Ya se chingó"
+        app:stepper_line_color_done="@color/primary"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

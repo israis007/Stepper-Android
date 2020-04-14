@@ -53,9 +53,9 @@
             <enum name="same" value="1" />
         </attr>
         <attr name="stepper_text_done" format="string" />
-        <attr name="stepper_text_wait" format="string" />
         <attr name="stepper_text_error" format="string" />
-        <attr name="stepper_text_current" format="string" />
+        <attr name="stepper_text" format="string" />
+        <attr name="stepper_text_button" format="string" />
 
     </declare-styleable>
 </resources>

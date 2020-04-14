@@ -56,23 +56,23 @@ class Stepper @JvmOverloads constructor(
                 ContextCompat.getColor(context, R.color.stepDone)
             )
             attrsStepper.stepper_icon_color_current = getColor(
-                R.styleable.Stepper_stepper_icon_color_done,
+                R.styleable.Stepper_stepper_icon_color_current,
                 ContextCompat.getColor(context, R.color.stepCurrent)
             )
             attrsStepper.stepper_icon_color_error = getColor(
-                R.styleable.Stepper_stepper_icon_color_done,
+                R.styleable.Stepper_stepper_icon_color_error,
                 ContextCompat.getColor(context, R.color.stepError)
             )
             attrsStepper.stepper_icon_color_wait = getColor(
-                R.styleable.Stepper_stepper_icon_color_done,
+                R.styleable.Stepper_stepper_icon_color_wait,
                 ContextCompat.getColor(context, R.color.stepWait)
             )
             attrsStepper.stepper_icon_color_edit = getColor(
-                R.styleable.Stepper_stepper_icon_color_done,
+                R.styleable.Stepper_stepper_icon_color_edit,
                 ContextCompat.getColor(context, R.color.stepIcons)
             )
             attrsStepper.stepper_icon_color_erase = getColor(
-                R.styleable.Stepper_stepper_icon_color_done,
+                R.styleable.Stepper_stepper_icon_color_erase,
                 ContextCompat.getColor(context, R.color.stepIcons)
             )
             attrsStepper.stepper_text_color_done = getColor(
@@ -80,15 +80,15 @@ class Stepper @JvmOverloads constructor(
                 ContextCompat.getColor(context, R.color.stepDone)
             )
             attrsStepper.stepper_text_color_current = getColor(
-                R.styleable.Stepper_stepper_icon_color_done,
+                R.styleable.Stepper_stepper_icon_color_current,
                 ContextCompat.getColor(context, R.color.stepCurrent)
             )
             attrsStepper.stepper_text_color_error = getColor(
-                R.styleable.Stepper_stepper_icon_color_done,
+                R.styleable.Stepper_stepper_icon_color_error,
                 ContextCompat.getColor(context, R.color.stepError)
             )
             attrsStepper.stepper_text_color_wait = getColor(
-                R.styleable.Stepper_stepper_icon_color_done,
+                R.styleable.Stepper_stepper_icon_color_wait,
                 ContextCompat.getColor(context, R.color.stepWait)
             )
             attrsStepper.stepper_text_size = getDimension(
@@ -188,84 +188,101 @@ class Stepper @JvmOverloads constructor(
                 reso.getDimension(R.dimen.note_margin_bottom)
             )
 
+            attrsStepper.stepper_text_type = AttrsStepper.getTexts(getInt(R.styleable.Stepper_stepper_texts, reso.getInteger(R.integer.TextsType)))
+
+            val texte = getString(R.styleable.Stepper_stepper_text_error)
+            attrsStepper.stepper_text_error = texte ?: reso.getString(R.string.step2)
+
+            val textd = getString(R.styleable.Stepper_stepper_text_done)
+            attrsStepper.stepper_text_done = textd ?: reso.getString(R.string.step1)
+
+            val textn = getString(R.styleable.Stepper_stepper_text)
+            attrsStepper.stepper_text = textn ?: reso.getString(R.string.add_new_activity)
+
+            val textbn = getString(R.styleable.Stepper_stepper_text_button)
+            attrsStepper.stepper_text_button = textbn ?: reso.getString(R.string.add_new_activity_button)
+
             /* Validating nulls */
             if (attrsStepper.stepper_icon_edit == null)
-                attrsStepper.stepper_icon_edit =
-                    ContextCompat.getDrawable(context, R.drawable.ic_edit)
+                attrsStepper.stepper_icon_edit = ContextCompat.getDrawable(context, R.drawable.ic_edit)
 
             if (attrsStepper.stepper_icon_erase == null)
-                attrsStepper.stepper_icon_erase =
-                    ContextCompat.getDrawable(context, R.drawable.ic_erase)
+                attrsStepper.stepper_icon_erase = ContextCompat.getDrawable(context, R.drawable.ic_erase)
 
             if (attrsStepper.stepper_icon_done == null)
-                attrsStepper.stepper_icon_done =
-                    ContextCompat.getDrawable(context, R.drawable.ic_done)
+                attrsStepper.stepper_icon_done = ContextCompat.getDrawable(context, R.drawable.ic_done)
 
             if (attrsStepper.stepper_icon_current == null)
-                attrsStepper.stepper_icon_current =
-                    ContextCompat.getDrawable(context, R.drawable.ic_current)
+                attrsStepper.stepper_icon_current = ContextCompat.getDrawable(context, R.drawable.ic_current)
 
             if (attrsStepper.stepper_icon_error == null)
-                attrsStepper.stepper_icon_error =
-                    ContextCompat.getDrawable(context, R.drawable.ic_error)
+                attrsStepper.stepper_icon_error = ContextCompat.getDrawable(context, R.drawable.ic_error)
 
             if (attrsStepper.stepper_icon_wait == null)
-                attrsStepper.stepper_icon_wait =
-                    ContextCompat.getDrawable(context, R.drawable.ic_wait)
+                attrsStepper.stepper_icon_wait = ContextCompat.getDrawable(context, R.drawable.ic_wait)
+
+            if (attrsStepper.stepper_text_color_done == null)
+                attrsStepper.stepper_text_color_done = Status.DONE.color
+
+            if (attrsStepper.stepper_text_color_current == null)
+                attrsStepper.stepper_text_color_current = Status.CURRENT.color
+
+            if (attrsStepper.stepper_text_color_error == null)
+                attrsStepper.stepper_text_color_error = Status.ERROR.color
+
+            if (attrsStepper.stepper_text_color_wait == null)
+                attrsStepper.stepper_text_color_wait = Status.WAITING.color
+
+
 
             /* Creating a example array to draw in preview of editor */
             stepList.add(
                 Step(
-                    context,
                     1,
                     reso.getString(R.string.step1),
-                    attrsStepper.stepper_text_color_current,
+                    attrsStepper.stepper_text_color_current!!,
                     reso.getString(R.string.step1),
-                    attrsStepper.stepper_text_color_done,
+                    attrsStepper.stepper_text_color_done!!,
                     Status.DONE
                 )
             )
             stepList.add(
                 Step(
-                    context,
                     2,
                     reso.getString(R.string.step2),
-                    attrsStepper.stepper_text_color_current,
+                    attrsStepper.stepper_text_color_current!!,
                     reso.getString(R.string.step2),
-                    attrsStepper.stepper_text_color_done,
+                    attrsStepper.stepper_text_color_done!!,
                     Status.ERROR
                 )
             )
             stepList.add(
                 Step(
-                    context,
                     3,
                     reso.getString(R.string.step3),
-                    attrsStepper.stepper_text_color_current,
+                    attrsStepper.stepper_text_color_current!!,
                     reso.getString(R.string.step3),
-                    attrsStepper.stepper_text_color_done,
+                    attrsStepper.stepper_text_color_done!!,
                     Status.CURRENT
                 )
             )
             stepList.add(
                 Step(
-                    context,
                     4,
                     reso.getString(R.string.step4),
-                    attrsStepper.stepper_text_color_current,
+                    attrsStepper.stepper_text_color_current!!,
                     reso.getString(R.string.step4),
-                    attrsStepper.stepper_text_color_done,
+                    attrsStepper.stepper_text_color_done!!,
                     Status.WAITING
                 )
             )
             stepList.add(
                 Step(
-                    context,
                     5,
                     reso.getString(R.string.step5),
-                    attrsStepper.stepper_text_color_current,
+                    attrsStepper.stepper_text_color_current!!,
                     reso.getString(R.string.step5),
-                    attrsStepper.stepper_text_color_done,
+                    attrsStepper.stepper_text_color_done!!,
                     Status.WAITING
                 )
             )
@@ -287,8 +304,8 @@ class Stepper @JvmOverloads constructor(
         aux = 0f
 
         for (i in 0 until stepList.size) {
-            val step = stepList[i]
-            val stepv = removeParent(createNewStep())
+            val step = stepList[i] //Get step
+            val stepv = ViewTools.getViewWithoutParent(createNewStep())
             val lp = LayoutParams(
                 LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT
@@ -304,94 +321,57 @@ class Stepper @JvmOverloads constructor(
             val iconErase = stepv.findViewById<ImageView>(R.id.icon_erase)
             val textView = stepv.findViewById<AppCompatTextView>(R.id.step_text)
 
-            /* Set custom views */
-            var iconfs: Drawable? = when (step.status) {
-                Status.DONE -> step.iconDone
-                Status.WAITING -> step.iconWait
-                Status.CURRENT -> step.iconCurrent
-                Status.ERROR -> step.iconError
+            /* Get icons from steps */
+            val iconfs: Drawable? = when(step.status){
+                Status.WAITING -> if (step.iconWait == null) attrsStepper.stepper_icon_wait else step.iconWait
+                Status.ERROR -> if (step.iconError == null) attrsStepper.stepper_icon_error else step.iconWait
+                Status.CURRENT -> if (step.iconCurrent == null) attrsStepper.stepper_icon_current else step.iconWait
+                Status.DONE -> if (step.iconDone == null) attrsStepper.stepper_icon_done else step.iconWait
             }
 
-            if (iconfs == null)
-                iconfs = when (step.status) {
-                    Status.DONE -> attrsStepper.stepper_icon_done
-                    Status.WAITING -> attrsStepper.stepper_icon_wait
-                    Status.CURRENT -> attrsStepper.stepper_icon_current
-                    Status.ERROR -> attrsStepper.stepper_icon_error
-                }
+            val iconErasefs: Drawable? = if (step.iconErase == null) attrsStepper.stepper_icon_erase else step.iconErase
 
-            var iconErasefs: Drawable? = step.iconErase
-
-            if (iconErasefs == null)
-                iconErasefs = attrsStepper.stepper_icon_erase
-
-            var iconEditfs: Drawable? = step.iconEdit
-
-            if (iconEditfs == null)
-                iconEditfs = attrsStepper.stepper_icon_edit
-
+            val iconEditfs: Drawable? = if (step.iconEdit == null) attrsStepper.stepper_icon_edit else step.iconEdit
 
             Glide.with(context).load(iconfs).fitCenter().circleCrop().into(iconView)
             Glide.with(context).load(iconErasefs).fitCenter().circleCrop().into(iconErase)
             Glide.with(context).load(iconEditfs).fitCenter().circleCrop().into(iconEdit)
 
             textView.text = when (step.status) {
-                Status.DONE -> step.textDone
+                Status.DONE -> if (attrsStepper.stepper_text_type == Texts.SAME) attrsStepper.stepper_text_done else step.textDone
                 Status.WAITING -> step.textWait
                 Status.CURRENT -> step.textCurrent
-                Status.ERROR -> step.textError
+                Status.ERROR -> if (attrsStepper.stepper_text_type == Texts.SAME) attrsStepper.stepper_text_error else step.textError
             }
 
-            var iconViewColor: Int? = when (step.status) {
-                Status.DONE -> step.iconDoneColorTint
-                Status.WAITING -> step.iconWaitColorTint
-                Status.CURRENT -> step.iconCurrentColorTint
-                Status.ERROR -> step.iconErrorColorTint
+            val iconViewColor: Int? = when (step.status) {
+                Status.DONE -> if (step.iconDoneColorTint == null) attrsStepper.stepper_icon_color_done else step.iconDoneColorTint
+                Status.WAITING -> if (step.iconWaitColorTint == null) attrsStepper.stepper_icon_color_wait else step.iconWaitColorTint
+                Status.CURRENT -> if (step.iconCurrentColorTint == null) attrsStepper.stepper_icon_color_current else step.iconCurrentColorTint
+                Status.ERROR -> if (step.iconErrorColorTint == null) attrsStepper.stepper_icon_color_error else step.iconErrorColorTint
             }
 
-            if (iconViewColor == null)
-                iconViewColor = when (step.status) {
-                    Status.DONE -> attrsStepper.stepper_icon_color_done
-                    Status.WAITING -> attrsStepper.stepper_icon_color_wait
-                    Status.CURRENT -> attrsStepper.stepper_icon_color_current
-                    Status.ERROR -> attrsStepper.stepper_icon_color_error
-                }
+            val iconEraseColor: Int? = if (step.iconEraseColorTint == null) attrsStepper.stepper_icon_color_erase else step.iconEraseColorTint
 
-            var iconEraseColor: Int? = step.iconEraseColorTint
-
-            if (iconEraseColor == null)
-                iconEraseColor = attrsStepper.stepper_icon_color_erase
-
-            var iconEditColor: Int? = step.iconEditColorTint
-
-            if (iconEditColor == null)
-                iconEditColor = attrsStepper.stepper_icon_color_erase
+            val iconEditColor: Int? = if (step.iconEditColorTint == null) attrsStepper.stepper_icon_color_edit else step.iconEditColorTint
 
             if (attrsStepper.stepper_icon_will_tint)
-                iconView.setColorFilter(iconViewColor, PorterDuff.Mode.SRC_IN)
+                iconView.setColorFilter(iconViewColor!!, PorterDuff.Mode.SRC_IN)
 
             if (attrsStepper.stepper_icon_edit_will_tint)
-                iconEdit.setColorFilter(iconEraseColor, PorterDuff.Mode.SRC_IN)
+                iconEdit.setColorFilter(iconEraseColor!!, PorterDuff.Mode.SRC_IN)
 
             if (attrsStepper.stepper_icon_erase_will_tint)
-                iconErase.setColorFilter(iconEditColor, PorterDuff.Mode.SRC_IN)
+                iconErase.setColorFilter(iconEditColor!!, PorterDuff.Mode.SRC_IN)
 
-            var textColor: Int? = when (step.status) {
-                Status.DONE -> step.textDoneColor
-                Status.WAITING -> step.textWaitColor
-                Status.CURRENT -> step.textCurrentColor
-                Status.ERROR -> step.textErrorColor
+            val textColor: Int? = when (step.status) {
+                Status.DONE -> if (step.textDoneColor == null) attrsStepper.stepper_text_color_done else step.textDoneColor
+                Status.WAITING -> if (step.textWaitColor == null) attrsStepper.stepper_text_color_wait else step.textWaitColor
+                Status.CURRENT -> if (step.textCurrentColor == null) attrsStepper.stepper_text_color_current else step.textCurrentColor
+                Status.ERROR -> if (step.textErrorColor == null) attrsStepper.stepper_text_color_error else step.textErrorColor
             }
 
-            if (textColor == null)
-                textColor = when (step.status) {
-                    Status.DONE -> attrsStepper.stepper_text_color_done
-                    Status.WAITING -> attrsStepper.stepper_text_color_wait
-                    Status.CURRENT -> attrsStepper.stepper_text_color_current
-                    Status.ERROR -> attrsStepper.stepper_text_color_error
-                }
-
-            textView.setTextColor(textColor)
+            textView.setTextColor(textColor!!)
             textView.textSize = attrsStepper.stepper_text_size
             val marg = context.resources.getDimension(R.dimen.icon_margin)
 
@@ -402,7 +382,7 @@ class Stepper @JvmOverloads constructor(
                     marg,
                     aux,
                     attrsStepper.stepper_icon_size,
-                    iconViewColor
+                    iconViewColor!!
                 )
             )
 
@@ -483,17 +463,25 @@ class Stepper @JvmOverloads constructor(
             attrsStepper.stepper_new_border_disable_color
         )
 
+        /*Custom edit text layout of new Activity */
         til_newActivity.hintTextColor = ColorStateList(states, colors)
         til_newActivity.defaultHintTextColor = ColorStateList(states, colors)
+        til_newActivity.hint = attrsStepper.stepper_text
+
+        /* Custom edit text of new Activity */
         et_newActivity.setTextColor(attrsStepper.stepper_new_text_color)
         et_newActivity.setTextSize(TypedValue.COMPLEX_UNIT_PX, attrsStepper.stepper_new_text_size)
+
+        /* Custom btn Add new Activity */
         btn_newActivity.setTextSize(
             TypedValue.COMPLEX_UNIT_PX,
             attrsStepper.stepper_new_button_text_size
         )
         btn_newActivity.setTextColor(attrsStepper.stepper_new_text_color)
         btn_newActivity.isAllCaps = attrsStepper.stepper_new_button_allcaps
+        btn_newActivity.text = attrsStepper.stepper_text_button
 
+        /* Create a layout params of edit text layout */
         val lpet = til_newActivity.layoutParams as LayoutParams
         lpet.setMargins(
             attrsStepper.stepper_new_margin_start.toInt(),
@@ -514,7 +502,6 @@ class Stepper @JvmOverloads constructor(
             else {
                 //add Activity
                 val stepn = Step(
-                    context,
                     stepList.size + 1,
                     textNew,
                     0,

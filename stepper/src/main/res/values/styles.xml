@@ -1,27 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="StepperStyle">
-        <item name="stepper_icon_edit">@drawable/ic_edit</item>
-        <item name="stepper_icon_erase">@drawable/ic_erase</item>
-        <item name="stepper_icon_done">@drawable/ic_done</item>
-        <item name="stepper_icon_current">@drawable/ic_current</item>
-        <item name="stepper_icon_error">@drawable/ic_error</item>
-        <item name="stepper_icon_wait">@drawable/ic_wait</item>
-        <item name="stepper_icon_color_done">@color/stepDone</item>
-        <item name="stepper_icon_color_current">@color/stepCurrent</item>
-        <item name="stepper_icon_color_error">@color/stepError</item>
-        <item name="stepper_icon_color_wait">@color/stepWait</item>
-        <item name="stepper_icon_color_edit">@color/stepIcons</item>
-        <item name="stepper_icon_color_erase">@color/stepIcons</item>
-        <item name="stepper_text_color_done">@color/stepDone</item>
-        <item name="stepper_text_color_current">@color/stepCurrent</item>
-        <item name="stepper_text_color_error">@color/stepError</item>
-        <item name="stepper_text_color_wait">@color/stepWait</item>
         <item name="stepper_text_size">@dimen/text_size</item>
         <item name="stepper_sequence">sequential</item>
         <item name="stepper_line_width">@dimen/line_witdh</item>
-        <item name="stepper_line_color_done">@color/stepDone</item>
-        <item name="stepper_line_color_wait">@color/stepWait</item>
         <item name="stepper_line_tintMode">solid</item>
         <item name="stepper_icon_side_size">@dimen/icon_side</item>
         <item name="stepper_icon_edit_side_size">@dimen/little_icon_side</item>

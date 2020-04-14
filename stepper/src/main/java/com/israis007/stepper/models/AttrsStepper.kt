@@ -48,7 +48,15 @@ class AttrsStepper {
     var stepper_text_type: Texts = Texts.SAME
     var stepper_text_done: String = ""
     var stepper_text_error: String = ""
-
+    var stepper_show_new_activity: Boolean = true
+    var stepper_show_attrs: Boolean = true
+    var stepper_text_state_done: String = ""
+    var stepper_text_state_current: String = ""
+    var stepper_text_state_wait: String = ""
+    var stepper_text_state_error: String = ""
+    var stepper_text_state_edit: String = ""
+    var stepper_text_state_erase: String = ""
+    var stepper_text_save: String = ""
 
     companion object {
         fun getSequence(valor: Int) = if (valor == 0) Sequence.SEQUENTIAL else Sequence.NON_SEQUENTIAL

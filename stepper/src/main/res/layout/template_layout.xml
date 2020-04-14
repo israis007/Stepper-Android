@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
 
-    <!-- Añadir nueva nota -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilNewNote"
         style="@style/OutlineEditText"
@@ -26,7 +25,6 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Añadir nuva nota -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnNewNote"
         android:layout_width="wrap_content"

@@ -12,4 +12,11 @@
     <string name="add_new_activity">Agregar Actividad</string>
     <string name="add_new_activity_button">Agregar</string>
     <string name="new_activity_error">Campo vacío</string>
+    <string name="text_editable">Editable?</string>
+    <string name="text_erasable">Erasable?</string>
+    <string name="text_save">Save</string>
+    <string name="state_done">Done</string>
+    <string name="state_current">Current</string>
+    <string name="state_error">Error</string>
+    <string name="state_waiting">Waiting</string>
 </resources>

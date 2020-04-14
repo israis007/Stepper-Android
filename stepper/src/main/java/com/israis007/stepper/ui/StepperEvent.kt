@@ -8,10 +8,6 @@ interface StepperEvent {
 
     fun stepWillEdit(step: Step)
 
-    fun confirmErase(): Boolean
-
-    fun confirmEdit(): Step?
-
     fun stepClicked(step: Step)
 
     fun stepAdded(step: Step)

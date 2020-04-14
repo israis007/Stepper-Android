@@ -56,6 +56,14 @@
         <attr name="stepper_text_error" format="string" />
         <attr name="stepper_text" format="string" />
         <attr name="stepper_text_button" format="string" />
-
+        <attr name="stepper_show_new_activity" format="boolean" />
+        <attr name="stepper_show_attrs" format="boolean" />
+        <attr name="stepper_text_state_done" format="string" />
+        <attr name="stepper_text_state_current" format="string" />
+        <attr name="stepper_text_state_wait" format="string" />
+        <attr name="stepper_text_state_error" format="string" />
+        <attr name="stepper_text_state_erase" format="string" />
+        <attr name="stepper_text_state_edit" format="string" />
+        <attr name="stepper_text_save" format="string" />
     </declare-styleable>
 </resources>

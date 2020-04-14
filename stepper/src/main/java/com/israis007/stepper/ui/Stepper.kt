@@ -8,21 +8,22 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.appcompat.widget.AppCompatSpinner
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.withStyledAttributes
 import com.bumptech.glide.Glide
+import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.israis007.stepper.R
 import com.israis007.stepper.models.*
 import com.israis007.stepper.tools.NumberHelper
 import com.israis007.stepper.tools.ViewTools
-import kotlin.collections.ArrayList
 import kotlin.math.abs
 
 class Stepper @JvmOverloads constructor(
@@ -35,6 +36,13 @@ class Stepper @JvmOverloads constructor(
     private val paint = Paint()
     private var aux = 0f
     private var stepperEvent: StepperEvent? = null
+    private var editFlag = false
+    private lateinit var editText: TextInputEditText
+    private var stepEdit: Step? = null
+    private var stepEditIndex = 0
+    private lateinit var cEdit: MaterialCheckBox
+    private lateinit var cErase: MaterialCheckBox
+    private lateinit var spinner: AppCompatSpinner
 
     init {
         context.withStyledAttributes(
@@ -48,7 +56,8 @@ class Stepper @JvmOverloads constructor(
             attrsStepper.stepper_icon_edit = getDrawable(R.styleable.Stepper_stepper_icon_edit)
             attrsStepper.stepper_icon_erase = getDrawable(R.styleable.Stepper_stepper_icon_erase)
             attrsStepper.stepper_icon_done = getDrawable(R.styleable.Stepper_stepper_icon_done)
-            attrsStepper.stepper_icon_current = getDrawable(R.styleable.Stepper_stepper_icon_current)
+            attrsStepper.stepper_icon_current =
+                getDrawable(R.styleable.Stepper_stepper_icon_current)
             attrsStepper.stepper_icon_error = getDrawable(R.styleable.Stepper_stepper_icon_error)
             attrsStepper.stepper_icon_wait = getDrawable(R.styleable.Stepper_stepper_icon_wait)
             attrsStepper.stepper_icon_color_done = getColor(
@@ -188,38 +197,70 @@ class Stepper @JvmOverloads constructor(
                 reso.getDimension(R.dimen.note_margin_bottom)
             )
 
-            attrsStepper.stepper_text_type = AttrsStepper.getTexts(getInt(R.styleable.Stepper_stepper_texts, reso.getInteger(R.integer.TextsType)))
+            attrsStepper.stepper_text_type = AttrsStepper.getTexts(
+                getInt(
+                    R.styleable.Stepper_stepper_texts,
+                    reso.getInteger(R.integer.TextsType)
+                )
+            )
+            attrsStepper.stepper_text_state_done =
+                getString(R.styleable.Stepper_stepper_text_state_done)
+                    ?: reso.getString(R.string.state_done)
+            attrsStepper.stepper_text_state_current =
+                getString(R.styleable.Stepper_stepper_text_state_current)
+                    ?: reso.getString(R.string.state_current)
+            attrsStepper.stepper_text_state_error =
+                getString(R.styleable.Stepper_stepper_text_state_error)
+                    ?: reso.getString(R.string.state_error)
+            attrsStepper.stepper_text_state_wait =
+                getString(R.styleable.Stepper_stepper_text_state_wait)
+                    ?: reso.getString(R.string.state_waiting)
+            attrsStepper.stepper_text_state_edit =
+                getString(R.styleable.Stepper_stepper_text_state_edit)
+                    ?: reso.getString(R.string.text_editable)
+            attrsStepper.stepper_text_state_erase =
+                getString(R.styleable.Stepper_stepper_text_state_erase)
+                    ?: reso.getString(R.string.text_erasable)
+            attrsStepper.stepper_text_save = getString(R.styleable.Stepper_stepper_text_state_done)
+                ?: reso.getString(R.string.text_save)
+            attrsStepper.stepper_text_error =
+                getString(R.styleable.Stepper_stepper_text_error) ?: reso.getString(R.string.step2)
+            attrsStepper.stepper_text_done =
+                getString(R.styleable.Stepper_stepper_text_done) ?: reso.getString(R.string.step1)
+            attrsStepper.stepper_text = getString(R.styleable.Stepper_stepper_text)
+                ?: reso.getString(R.string.add_new_activity)
+            attrsStepper.stepper_text_button = getString(R.styleable.Stepper_stepper_text_button)
+                ?: reso.getString(R.string.add_new_activity_button)
 
-            val texte = getString(R.styleable.Stepper_stepper_text_error)
-            attrsStepper.stepper_text_error = texte ?: reso.getString(R.string.step2)
-
-            val textd = getString(R.styleable.Stepper_stepper_text_done)
-            attrsStepper.stepper_text_done = textd ?: reso.getString(R.string.step1)
-
-            val textn = getString(R.styleable.Stepper_stepper_text)
-            attrsStepper.stepper_text = textn ?: reso.getString(R.string.add_new_activity)
-
-            val textbn = getString(R.styleable.Stepper_stepper_text_button)
-            attrsStepper.stepper_text_button = textbn ?: reso.getString(R.string.add_new_activity_button)
+            attrsStepper.stepper_show_new_activity =
+                getBoolean(R.styleable.Stepper_stepper_show_new_activity, true)
+            attrsStepper.stepper_show_attrs =
+                getBoolean(R.styleable.Stepper_stepper_show_attrs, true)
 
             /* Validating nulls */
             if (attrsStepper.stepper_icon_edit == null)
-                attrsStepper.stepper_icon_edit = ContextCompat.getDrawable(context, R.drawable.ic_edit)
+                attrsStepper.stepper_icon_edit =
+                    ContextCompat.getDrawable(context, R.drawable.ic_edit)
 
             if (attrsStepper.stepper_icon_erase == null)
-                attrsStepper.stepper_icon_erase = ContextCompat.getDrawable(context, R.drawable.ic_erase)
+                attrsStepper.stepper_icon_erase =
+                    ContextCompat.getDrawable(context, R.drawable.ic_erase)
 
             if (attrsStepper.stepper_icon_done == null)
-                attrsStepper.stepper_icon_done = ContextCompat.getDrawable(context, R.drawable.ic_done)
+                attrsStepper.stepper_icon_done =
+                    ContextCompat.getDrawable(context, R.drawable.ic_done)
 
             if (attrsStepper.stepper_icon_current == null)
-                attrsStepper.stepper_icon_current = ContextCompat.getDrawable(context, R.drawable.ic_current)
+                attrsStepper.stepper_icon_current =
+                    ContextCompat.getDrawable(context, R.drawable.ic_current)
 
             if (attrsStepper.stepper_icon_error == null)
-                attrsStepper.stepper_icon_error = ContextCompat.getDrawable(context, R.drawable.ic_error)
+                attrsStepper.stepper_icon_error =
+                    ContextCompat.getDrawable(context, R.drawable.ic_error)
 
             if (attrsStepper.stepper_icon_wait == null)
-                attrsStepper.stepper_icon_wait = ContextCompat.getDrawable(context, R.drawable.ic_wait)
+                attrsStepper.stepper_icon_wait =
+                    ContextCompat.getDrawable(context, R.drawable.ic_wait)
 
             if (attrsStepper.stepper_text_color_done == null)
                 attrsStepper.stepper_text_color_done = Status.DONE.color
@@ -232,8 +273,6 @@ class Stepper @JvmOverloads constructor(
 
             if (attrsStepper.stepper_text_color_wait == null)
                 attrsStepper.stepper_text_color_wait = Status.WAITING.color
-
-
 
             /* Creating a example array to draw in preview of editor */
             stepList.add(
@@ -322,16 +361,18 @@ class Stepper @JvmOverloads constructor(
             val textView = stepv.findViewById<AppCompatTextView>(R.id.step_text)
 
             /* Get icons from steps */
-            val iconfs: Drawable? = when(step.status){
+            val iconfs: Drawable? = when (step.status) {
                 Status.WAITING -> if (step.iconWait == null) attrsStepper.stepper_icon_wait else step.iconWait
                 Status.ERROR -> if (step.iconError == null) attrsStepper.stepper_icon_error else step.iconWait
                 Status.CURRENT -> if (step.iconCurrent == null) attrsStepper.stepper_icon_current else step.iconWait
                 Status.DONE -> if (step.iconDone == null) attrsStepper.stepper_icon_done else step.iconWait
             }
 
-            val iconErasefs: Drawable? = if (step.iconErase == null) attrsStepper.stepper_icon_erase else step.iconErase
+            val iconErasefs: Drawable? =
+                if (step.iconErase == null) attrsStepper.stepper_icon_erase else step.iconErase
 
-            val iconEditfs: Drawable? = if (step.iconEdit == null) attrsStepper.stepper_icon_edit else step.iconEdit
+            val iconEditfs: Drawable? =
+                if (step.iconEdit == null) attrsStepper.stepper_icon_edit else step.iconEdit
 
             Glide.with(context).load(iconfs).fitCenter().circleCrop().into(iconView)
             Glide.with(context).load(iconErasefs).fitCenter().circleCrop().into(iconErase)
@@ -351,9 +392,11 @@ class Stepper @JvmOverloads constructor(
                 Status.ERROR -> if (step.iconErrorColorTint == null) attrsStepper.stepper_icon_color_error else step.iconErrorColorTint
             }
 
-            val iconEraseColor: Int? = if (step.iconEraseColorTint == null) attrsStepper.stepper_icon_color_erase else step.iconEraseColorTint
+            val iconEraseColor: Int? =
+                if (step.iconEraseColorTint == null) attrsStepper.stepper_icon_color_erase else step.iconEraseColorTint
 
-            val iconEditColor: Int? = if (step.iconEditColorTint == null) attrsStepper.stepper_icon_color_edit else step.iconEditColorTint
+            val iconEditColor: Int? =
+                if (step.iconEditColorTint == null) attrsStepper.stepper_icon_color_edit else step.iconEditColorTint
 
             if (attrsStepper.stepper_icon_will_tint)
                 iconView.setColorFilter(iconViewColor!!, PorterDuff.Mode.SRC_IN)
@@ -386,56 +429,113 @@ class Stepper @JvmOverloads constructor(
                 )
             )
 
+            /* hide view from attrs */
+            iconErase.visibility = if (step.isErasable) View.VISIBLE else View.GONE
+            iconEdit.visibility = if (step.isEditable) View.VISIBLE else View.GONE
+
             /* Add Events */
             if (stepperEvent != null) {
-                iconErase.setOnClickListener {
-                    if (step.isErasable) {
-                        stepperEvent!!.stepWillErase(step)
-                        if (stepperEvent!!.confirmErase()) {
-                            stepList.remove(step)
-                            paintSteps()
-                        }
-                    }
-                }
 
-                iconEdit.setOnClickListener {
-                    if (step.isEditable) {
-                        stepperEvent!!.stepWillEdit(step)
-                        val stepTemp = stepperEvent!!.confirmEdit()
-                        if (stepTemp != null) {
-                            stepList.remove(step)
-                            stepList.add(i, stepTemp)
-                            paintSteps()
-                        }
+                if (step.isErasable)
+                    iconErase.setOnClickListener {
+                        stepperEvent?.stepWillErase(step)
                     }
-                }
 
-                textView.setOnClickListener {
-                    if (step.isEnabled)
-                        stepperEvent!!.stepClicked(step)
-                }
+                if (step.isEditable)
+                    iconEdit.setOnClickListener {
+                        stepperEvent?.stepWillEdit(step)
+                        stepEdit = step
+                        editFlag = true
+                        stepEditIndex = i
+                        if (attrsStepper.stepper_show_new_activity)
+                            editText.setText(step.textCurrent)
+                    }
+
+                if (step.isEnabled)
+                    textView.setOnClickListener {
+                        stepperEvent?.stepClicked(step)
+                    }
             }
 
             this.addView(stepv)
         }
 
-        loadLastField()
+        if (attrsStepper.stepper_show_attrs)
+            loadAttrsField()
+
+        if (attrsStepper.stepper_show_new_activity)
+            loadLastField()
 
     }
 
     private fun createNewStep(): View =
         LayoutInflater.from(context).inflate(R.layout.item_layout, null, false)
 
-    private fun removeParent(view: View): View {
-        if (view.parent != null)
-            (view as ViewGroup).removeView(view)
-        return view
+    private fun loadAttrsField() {
+        val layattr = LayoutInflater.from(context).inflate(R.layout.attrs_layout, null, false)
+        cEdit = layattr.findViewById(R.id.cb_edit)
+        cErase = layattr.findViewById(R.id.cb_erase)
+        spinner = layattr.findViewById(R.id.spinner_state)
+
+        /* Creating adapter */
+        val arrayList = ArrayList<String>()
+        arrayList.add(attrsStepper.stepper_text_state_done)
+        arrayList.add(attrsStepper.stepper_text_state_current)
+        arrayList.add(attrsStepper.stepper_text_state_error)
+        arrayList.add(attrsStepper.stepper_text_state_wait)
+
+        spinner.adapter =
+            ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, arrayList)
+        spinner.setSelection(3)
+
+        /* Setting texts */
+        cEdit.text = attrsStepper.stepper_text_state_edit
+        cErase.text = attrsStepper.stepper_text_state_erase
+
+        cEdit.setTextColor(attrsStepper.stepper_new_border_disable_color)
+        cErase.setTextColor(attrsStepper.stepper_new_border_disable_color)
+
+        val states = arrayOf(
+            intArrayOf(android.R.attr.state_checked),
+            intArrayOf(-android.R.attr.state_checked)
+        )
+
+        val colors = intArrayOf(
+            attrsStepper.stepper_new_border_enable_color,
+            attrsStepper.stepper_new_border_disable_color
+        )
+
+        cEdit.setOnCheckedChangeListener { _, isChecked ->
+            cEdit.setTextColor(if (isChecked) attrsStepper.stepper_new_border_enable_color else attrsStepper.stepper_new_border_disable_color)
+        }
+
+        cErase.setOnCheckedChangeListener { _, isChecked ->
+            cErase.setTextColor(if (isChecked) attrsStepper.stepper_new_border_enable_color else attrsStepper.stepper_new_border_disable_color)
+        }
+
+        cEdit.buttonTintList = ColorStateList(states, colors)
+        cErase.buttonTintList = ColorStateList(states, colors)
+
+        /* Create a layout params of edit text layout */
+        val lpet = LayoutParams(
+            LayoutParams.MATCH_PARENT,
+            LayoutParams.WRAP_CONTENT
+        )
+        lpet.setMargins(
+            attrsStepper.stepper_new_margin_start.toInt(),
+            attrsStepper.stepper_new_margin_top.toInt(),
+            attrsStepper.stepper_new_margin_end.toInt(),
+            attrsStepper.stepper_new_margin_bottom.toInt()
+        )
+        layattr.layoutParams = lpet
+
+        this@Stepper.addView(layattr)
     }
 
     private fun loadLastField() {
         val temp = LayoutInflater.from(context).inflate(R.layout.template_layout, null, false)
         val til_newActivity = temp.findViewById<TextInputLayout>(R.id.tilNewNote)
-        val et_newActivity = temp.findViewById<TextInputEditText>(R.id.etNewNote)
+        editText = temp.findViewById(R.id.etNewNote)
         val btn_newActivity = temp.findViewById<Button>(R.id.btnNewNote)
 
         /* Setting properties */
@@ -469,8 +569,8 @@ class Stepper @JvmOverloads constructor(
         til_newActivity.hint = attrsStepper.stepper_text
 
         /* Custom edit text of new Activity */
-        et_newActivity.setTextColor(attrsStepper.stepper_new_text_color)
-        et_newActivity.setTextSize(TypedValue.COMPLEX_UNIT_PX, attrsStepper.stepper_new_text_size)
+        editText.setTextColor(attrsStepper.stepper_new_text_color)
+        editText.setTextSize(TypedValue.COMPLEX_UNIT_PX, attrsStepper.stepper_new_text_size)
 
         /* Custom btn Add new Activity */
         btn_newActivity.setTextSize(
@@ -487,7 +587,7 @@ class Stepper @JvmOverloads constructor(
             attrsStepper.stepper_new_margin_start.toInt(),
             attrsStepper.stepper_new_margin_top.toInt(),
             attrsStepper.stepper_new_margin_end.toInt(),
-            attrsStepper.stepper_new_margin_bottom.toInt()
+            0
         )
         til_newActivity.layoutParams = lpet
 
@@ -496,26 +596,80 @@ class Stepper @JvmOverloads constructor(
 
         /* Adding Events */
         btn_newActivity.setOnClickListener {
-            val textNew = et_newActivity.text.toString().trim()
+            val textNew = editText.text.toString().trim()
             if (textNew.isEmpty())
-                et_newActivity.error = context.getString(R.string.new_activity_error)
+                editText.error = context.getString(R.string.new_activity_error)
             else {
-                //add Activity
-                val stepn = Step(
-                    stepList.size + 1,
-                    textNew,
-                    0,
-                    context.getString(R.string.step1),
-                    0,
-                    Status.WAITING
-                )
-                this@Stepper.stepList.add(stepn)
-                stepperEvent?.stepAdded(stepn)
-                et_newActivity.text = null
+                //add Activity or save edit
+                if (editFlag) {
+                    when (stepEdit!!.status) {
+                        Status.DONE -> stepEdit!!.textDone = textNew
+                        Status.CURRENT -> stepEdit!!.textCurrent = textNew
+                        Status.ERROR -> stepEdit!!.textError = textNew
+                        Status.WAITING -> stepEdit!!.textWait = textNew
+                    }
+
+                    if (attrsStepper.stepper_show_attrs) {
+                        stepEdit!!.isEditable = cEdit.isChecked
+                        stepEdit!!.isErasable = cErase.isChecked
+                        stepEdit!!.status = when (spinner.selectedItemPosition) {
+                            0 -> Status.DONE
+                            1 -> Status.CURRENT
+                            2 -> Status.ERROR
+                            else -> Status.WAITING
+                        }
+                    }
+
+                    this@Stepper.editStep(stepEdit!!, stepEditIndex)
+                } else {
+                    val stepn = Step(
+                        stepList.size + 1,
+                        textNew,
+                        if (attrsStepper.stepper_show_attrs)
+                            when (spinner.selectedItemPosition) {
+                                0 -> Status.DONE
+                                1 -> Status.CURRENT
+                                2 -> Status.ERROR
+                                else -> Status.WAITING
+                            }
+                        else
+                            Status.WAITING
+                    )
+
+                    if (attrsStepper.stepper_show_attrs) {
+                        stepn.isEditable = cEdit.isChecked
+                        stepn.isErasable = cErase.isChecked
+                    }
+
+
+                    this@Stepper.stepList.add(stepn)
+                    stepperEvent?.stepAdded(stepn)
+                }
+                editText.text = null
                 paintSteps()
             }
         }
         this@Stepper.addView(ViewTools.getViewWithoutParent(temp))
+    }
+
+    fun editStep(step: Step, index: Int) {
+        if (editFlag)
+            stepList.remove(stepEdit)
+        else
+            stepList.removeAt(index)
+        stepList.add(if (editFlag) stepEditIndex else index, step)
+        editFlag = false
+        paintSteps()
+    }
+
+    fun deleteStep(step: Step) {
+        stepList.remove(step)
+        paintSteps()
+    }
+
+    fun deleteStep(index: Int) {
+        stepList.removeAt(index)
+        paintSteps()
     }
 
     override fun onDraw(canvas: Canvas?) {

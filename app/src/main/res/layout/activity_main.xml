@@ -12,6 +12,7 @@
         android:layout_height="match_parent"
         android:layout_marginStart="10sp"
         android:layout_marginEnd="10sp"
+        android:layout_marginTop="20sp"
         app:stepper_sequence="sequential"
         app:stepper_line_tintMode="solid"
         app:stepper_line_width="2sp"
@@ -26,6 +27,10 @@
         app:stepper_texts="same"
         app:stepper_text_done="Ya se chingó"
         app:stepper_line_color_done="@color/primary"
+        app:stepper_text_state_erase="Borrable?"
+        app:stepper_text_state_edit="Eliminable?"
+        app:stepper_text_state_done="Completado"
+        app:stepper_text_state_wait="En espera"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
